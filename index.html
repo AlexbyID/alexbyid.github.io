@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <title>peepafighter</title>
+  </head>
+  <body>
+    <img class="main_map map_active_1" src="./imgs/maps/1.jpg">
+    <canvas id="maps">
+      <div style="width:100%" id="main_map">
+        <div class="char-wrap">
+          <div class="main_char" id="main_char" style="">
+            <div class="colone-bar" style="display:block;">
+              <div class="full-hp-bar">
+                <div class="hp-bar" id="hp_bar">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </canvas>
+    <div class="menu_game">
+      <div class="first-page-menu" id="first_page" style="">
+        <div class="item_game">
+          <div class="item_hov">
+            <span class="menu_item_dec startgame item-dec-w-1 start_game_rus">
+              Начать игру
+            </span>
+          </div>
+        </div>
+        <div class="item_game">
+          <div class="item_hov">
+            <span class="menu_item_dec setting item-dec-w-1 setting_rus">
+              Настройки
+            </span>
+          </div>
+        </div>
+        <div class="item_game">
+          <div class="item_hov">
+            <span class="menu_item_dec language item-dec-w-1 language_rus">
+              Язык
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="second-page-menu" id="second_page" style="display:none;">
+        <div class="item_game">
+          <div class="item_not_hov">
+            <div class="two-btn">
+              <span class="menu_item_dec item-dec-w-2 left_rus">
+                влево:
+              </span>
+              <span class="menu_item_not_ch left">A</span>
+            </div>
+          </div>
+        </div>
+        <div class="item_game">
+          <div class="item_not_hov">
+            <div class="two-btn">
+              <span class="menu_item_dec item-dec-w-2 right_rus">
+                вправо:
+              </span>
+              <span class="menu_item_not_ch right">D</span>
+            </div>
+          </div>
+        </div>
+        <div class="item_game">
+          <div class="item_not_hov">
+            <div class="two-btn">
+              <span class="menu_item_dec item-dec-w-2 jump_rus">
+                прыжок:
+              </span>
+              <span class="menu_item_not_ch jump">W</span>
+            </div>
+          </div>
+        </div>
+        <div class="item_game">
+          <div class="item_hov lower-item">
+            <div class="return-back">
+              <span class="menu_item_back back_rus">
+                Назад
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="third-page-menu" id="third_page" style="display:none;">
+        <div class="item_game-3-lng">
+          <div class="item_not_hov">
+            <div class="two-btn">
+              <span class="menu_item_dec item-dec-w-3 text_rus">
+                текст:
+              </span>
+              <div class="menu_item_not_ch-3 ch-3-mrg">
+                <span class="change-game-lang">Русский</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item_game-language" style="display:none;">
+          <div class="item_not_hov">
+            <div class="two-btn">
+              <div class="item-dec-w-3">
+              </div>
+              <div class="menu-other-item-color ch-3-mrg-lng">
+                <div class="change-this-language">
+                  <span class="hov-language">English</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item_game">
+          <div class="item_hov lower-item-3">
+            <div class="return-back">
+              <span class="menu_item_back-3 back_rus-2">
+                Назад
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fourth-page-menu" id="fourth_page" style="display:none;">
+        <div class="item_game">
+          <div class="item_hov">
+            <span class="menu_item_dec startgame item-dec-w-1 start_game_rus">
+              Возобновить
+            </span>
+          </div>
+        </div>
+        <div class="item_game">
+          <div class="item_hov">
+            <span class="menu_item_dec setting item-dec-w-1 setting_rus">
+              Настройки
+            </span>
+          </div>
+        </div>
+        <div class="item_game">
+          <div class="item_hov">
+            <span class="menu_item_dec language item-dec-w-1 language_rus">
+              Язык
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="scripts.js"></script>
+  </body>
+</html>
