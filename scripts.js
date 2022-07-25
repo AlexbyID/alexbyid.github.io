@@ -90,7 +90,7 @@ let tick = 0;
 
 let rectY = startPepegaY-25;
 let rect_DmgWidth = pepegaWidth;
-let rect_HealthWidth = pepegaWidth-10;
+let rect_HealthWidth = pepegaWidth-1;
 let rect_Height = 10;
 
 let rectPosition = {
@@ -104,6 +104,17 @@ let left_shag = false;
 let right_shag = false;
 
 let rotate = 850;
+
+
+let wingame = document.querySelector(".wingame");
+
+let startMoveXpepega = startPepegaX;
+let startMoveYpepega = startPepegaY;
+let startMoveXayaka = startAyakaX;
+let startMoveYayaka = startAyakaY;
+
+let rectPosX = rectPosition.x;
+let rectPosY = rectPosition.y;
 
 function drawPeepa(){
   window.requestAnimationFrame(drawPeepa);
@@ -199,8 +210,38 @@ function drawPeepa(){
     r_counter++;
   }
   if(pepega_person.x===screenW-pepegaWidth-pepegaWidth/2){
-    keys.right.pressed = false;
-    l_counter++;
+    stopgame = true;
+    wingame.style.cssText = "";
+    window.addEventListener("keydown", function(press){
+      let key = String.fromCharCode(press.keyCode);
+      if(wingame.style.display === "" && stopgame===true && key==="Q"){
+        pepega_person.x = startMoveXpepega;
+        pepega_person.y = startMoveYpepega;
+        ayaka_enemy.x = startMoveXayaka;
+        ayaka_enemy.y = startMoveYayaka;
+
+        l_counter = 0;
+        r_counter = 0;
+        j_counter = 0
+        block_jmp = false;
+        j_check = false;
+        j_current_check = false;
+        keys.left.pressed = false;
+        keys.right.pressed = false;
+        keys.jump.pressed = false;
+
+        rectPosition.x = rectPosX;
+        rectPosition.y = rectPosY;
+
+        ayaka_step = false;
+        left_shag = false;
+        right_shag = false
+        tick = 0;
+
+        wingame.style.display = "none";
+        stopgame = false;
+      }
+    });
   }
 }drawPeepa();
 
@@ -367,6 +408,7 @@ let jump = document.querySelector(".jump_rus");
 let back_now = document.querySelector(".back_rus");
 let back_now_2 = document.querySelector(".back_rus-2");
 let text = document.querySelector(".text_rus");
+let winner = document.querySelector(".winner_rus");
 
 change_language.onclick=()=>{
   let remember_lng = current_language.innerHTML;
@@ -389,6 +431,7 @@ change_language.onclick=()=>{
     back_now.classList.remove("back_rus");
     back_now_2.classList.remove("back_rus-2");
     text.classList.remove("text_rus");
+    winner.classList.remove("winner_rus");
 
     startgame[0].classList.add("start_game_eng");
     startgame[1].classList.add("start_game_eng");
@@ -402,6 +445,7 @@ change_language.onclick=()=>{
     back_now.classList.add("back_eng");
     back_now_2.classList.add("back_eng-2")
     text.classList.add("text_eng");
+    winner.classList.add("winner_eng");
 
     if(startgame[0].classList.contains("start_game_eng"))
       startgame[0].innerHTML = "Start game";
@@ -427,6 +471,8 @@ change_language.onclick=()=>{
       back_now_2.innerHTML = "Back";
     if(text.classList.contains("text_eng"))
       text.innerHTML = "text:";
+    if(winner.classList.contains("winner_eng"))
+      winner.innerHTML = "Congratulations, you won, press Q to restart";
 
   }else{
     console.log(startgame);
@@ -442,6 +488,7 @@ change_language.onclick=()=>{
     back_now.classList.remove("back_eng");
     back_now_2.classList.remove("back_eng-2");
     text.classList.remove("text_eng");
+    winner.classList.remove("winner_eng");
 
     startgame[0].classList.add("start_game_rus");
     startgame[1].classList.add("start_game_rus");
@@ -455,6 +502,7 @@ change_language.onclick=()=>{
     back_now.classList.add("back_rus");
     back_now_2.classList.add("back_rus-2")
     text.classList.add("text_rus");
+    winner.classList.add("winner_rus");
 
     if(startgame[0].classList.contains("start_game_rus"))
       startgame[0].innerHTML = "Начать игру";
@@ -480,6 +528,8 @@ change_language.onclick=()=>{
       back_now_2.innerHTML = "Назад";
     if(text.classList.contains("text_rus"))
       text.innerHTML = "текст:";
+    if(winner.classList.contains("winner_rus"))
+      winner.innerHTML = "Поздравляем, вы победили, нажмите Q, чтобы начать заново";
   }
 }
 
@@ -513,14 +563,14 @@ let esc_counter = 0;
 window.addEventListener("keydown", function(press){
   let key = String.fromCharCode(press.keyCode);
   if(key==="" && esc_counter===0 && first_page.style.display==="none" &&
-  second_page.style.display==="none" && third_page.style.display==="none"){
+  second_page.style.display==="none" && third_page.style.display==="none" && pepega_person.x!==screenW-pepegaWidth-pepegaWidth/2){
     fourth_page.style.cssText="";
     esc_counter++;
 
     stopgame = true;
 
   }else if(key==="" && esc_counter>0 && first_page.style.display==="none" &&
-  second_page.style.display==="none" && third_page.style.display==="none"){
+  second_page.style.display==="none" && third_page.style.display==="none" && pepega_person.x!==screenW-pepegaWidth-pepegaWidth/2){
     fourth_page.style.display="none";
     esc_counter=0;
     stopgame = false;
