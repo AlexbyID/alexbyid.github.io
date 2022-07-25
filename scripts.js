@@ -6,6 +6,8 @@ let screenW = window.screen.width;
 
 var img = new Image();
 let pepega = new Image();
+let ayaka = new Image();
+
 var canvas = document.getElementById("maps");
 
 
@@ -13,21 +15,12 @@ let ctx = canvas.getContext("2d");
 let step = 1;
 
 pepega.src = "./sprites/pepega_main_char/right_step.png";
-
+ayaka.src = "./sprites/ayaka_enemy/left_step.png";
 
 window.addEventListener('resize', resizeCanvas, false);
 
 
 img.onload = resizeCanvas;
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  img.width = canvas.width;
-  img.height = canvas.height;
-  drawBackground();
-}
 
 let pepegaWidth = 100;
 let pepegaHeight = 100;
@@ -42,10 +35,31 @@ let pepega_person = {
   y: startPepegaY
 }
 
+// let startAyakaX = screenW-pepegaWidth-pepegaWidth/2;
+let ayakaWidth = 186;
+let ayakaHeight = 217;
+let startAyakaX = screenW-pepegaWidth-pepegaWidth/2-60;
+let startAyakaY = startPepegaY-ayakaWidth/2-22;
+
+let ayaka_enemy = {
+  x: startAyakaX,
+  y: startAyakaY
+}
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  img.width = canvas.width;
+  img.height = canvas.height;
+  drawBackground();
+}
+
 function drawBackground(){
   console.log(img.width + "\n" + img.height + "\n");
   ctx.drawImage(img, 0, 0);
   ctx.drawImage(pepega, startPepegaX, startPepegaY, pepegaWidth, pepegaHeight);
+  ctx.drawImage(ayaka, startAyakaX, startAyakaY, ayakaWidth, ayakaHeight);
 }
 
 let keys = {
@@ -69,11 +83,41 @@ let j_current_check = false;
 
 let stopgame = true;
 
+
+
+let ayaka_step = false;
+let tick = 0;
+
+let rectY = startPepegaY-25;
+let rect_DmgWidth = pepegaWidth;
+let rect_HealthWidth = pepegaWidth-10;
+let rect_Height = 10;
+
+let rectPosition = {
+  x: 0,
+  y: rectY
+}
+
+var sameEvent = false;
+
+let left_shag = false;
+let right_shag = false;
+
+let rotate = 850;
+
 function drawPeepa(){
   window.requestAnimationFrame(drawPeepa);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(img, 0, 0);
   ctx.drawImage(pepega, pepega_person.x, pepega_person.y, pepegaWidth, pepegaHeight);
+
+
+  ctx.fillStyle = "white";
+  ctx.fillRect(rectPosition.x, rectPosition.y, rect_DmgWidth, rect_Height);
+  ctx.fillStyle = "red";
+  ctx.fillRect(rectPosition.x, rectPosition.y, rect_HealthWidth, rect_Height);
+
+  ctx.drawImage(ayaka, ayaka_enemy.x, ayaka_enemy.y, ayakaWidth, ayakaHeight);
 
   step = 4;
   jmp = 10;
@@ -81,15 +125,59 @@ function drawPeepa(){
 
   continueJump();
 
+  if(ayaka_step===false && ayaka_enemy.x!==rotate && stopgame===false){
+    ayaka.src = "./sprites/ayaka_enemy/left_step.png";
+    left_shag = true;
+    right_shag = false;
+    ayaka_enemy.x-=step;
+    if(ayaka_enemy.x===rotate){
+      window.setTimeout(function(){
+        ayaka.src = "./sprites/ayaka_enemy/after_attack_left.png";
+        tick++;
+      }, 400);
+    }
+  }
+
+  if(tick>0 && left_shag===true && ayaka_enemy.x===rotate && stopgame===false){
+    window.setTimeout(function(){
+      ayaka_step = true;
+    }, 300);
+  }
+
+  if(ayaka_step===true && ayaka_enemy.x!==startAyakaX && stopgame===false){
+    ayaka.src = "./sprites/ayaka_enemy/right_step.png";
+    right_shag = true;
+    left_shag = false;
+    ayaka_enemy.x+=step;
+    if(ayaka_enemy.x===startAyakaX){
+      window.setTimeout(function(){
+        ayaka.src = "./sprites/ayaka_enemy/after_attack_right.png";
+        tick = 0;
+      }, 400);
+    }
+  }
+
+  if(tick===0 && right_shag===true && ayaka_enemy.x===startAyakaX && stopgame===false){
+    window.setTimeout(function(){
+      ayaka_step = false;
+    }, 300);
+  }
+
+
+
   if(keys.right.pressed === true && l_counter === 0 && stopgame===false){
     pepega_person.x+=step;
+    rectPosition.x+=step;
     // console.log(keys.jump.pressed)
   }
-  if(keys.left.pressed === true && r_counter === 0 && stopgame===false)
+  if(keys.left.pressed === true && r_counter === 0 && stopgame===false){
     pepega_person.x-=step;
+    rectPosition.x-=step;
+  }
   // else if(keys.right.pressed === true && lastkey === "'" && keycounter>1)
   if(keys.jump.pressed === true && block_jmp===false && stopgame===false){
     pepega_person.y-=jmp;
+    rectPosition.y-=jmp;
     // console.log(pepega_person.y)
     if(pepega_person.y===endJumpY && stopgame===false){
       block_jmp = true;
@@ -99,6 +187,7 @@ function drawPeepa(){
   if(keys.jump.pressed === false && pepega_person.y>fallJumpY
     && block_jmp===true && stopgame===false){
     pepega_person.y+=jmp;
+    rectPosition.y+=jmp;
     if(pepega_person.y===startPepegaY){
       block_jmp = false;
       j_counter = 0;
@@ -136,6 +225,7 @@ window.addEventListener("keydown", function(press){
     j_current_check = true;
     j_counter++;
   }
+
   if((key===left_btn.innerHTML && j_check===true && pepega_person.y===startPepegaY && stopgame===false) ||
      (key===right_btn.innerHTML && j_check===true && pepega_person.y===startPepegaY && stopgame===false)){
        keys.jump.pressed = true;
